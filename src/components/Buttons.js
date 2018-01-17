@@ -9,7 +9,8 @@ const BrowseBtnRender = (props) => {
 
 	var handleImageFile = () => {
 		var fileReader = new FileReader();
-		props.imgPath(this.uploadBtn.files[0].path);
+		props.imgPath(this.uploadBtn.files[0] === undefined ? "" : this.uploadBtn.files[0].path);
+		console.log(this.uploadBtn.files[0]);
 	}
 
 	return (
@@ -42,19 +43,23 @@ export class BrowseFilePannel extends React.Component {
 		console.log(this.state.imgPath);
 	}
 
+	setStateImgPath(p) {
+		this.setState({imgPath : p});
+	}
+
 	render() {
 		return (
 			<div>
 				<form method="POST">
-					<BrowseBtnRender imgPath={(p) => {this.setState({imgPath : p});}}/>
+					<BrowseBtnRender imgPath={(p) => this.setStateImgPath(p)}/>
 					<br/>
 					<br/>
 					<BtnUpload raised color="primary" onClick={(e) => {
-						console.log(this.imgFile.props.filePath);
+						console.log(this.state.imgPath);
 					}}>Submit</BtnUpload>
 				</form>
 				<br/>
-				{this.state.imgPath === "" ? null : <img src={require('./headphone3.jpg')} width="300" height="377" alt="Headphone"/>}
+				{this.state.imgPath == "" ? null : <img src={require(this.state.imgPath)} width="300" height="377" alt="Headphone"/>}
 			</div>
 		);
 	}
